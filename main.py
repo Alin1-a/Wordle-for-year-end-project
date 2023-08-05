@@ -6,7 +6,7 @@ def load_dictionary(file_path):
     return words
 
 def is_valid_guess(guess, guesses):
-    return guess in guesses
+    return len(guess) == 5 and guess in guesses
 
 def evaluate_guess(guess, word):
     str = ""
@@ -23,24 +23,21 @@ def evaluate_guess(guess, word):
     return str + "\033[0m"
 
 def wordle(guesses, answers):
-    print()
-    print()
-    print()
-    print()
-    print()
     print("Welcome to Wordle! Get 6 chances to guess a 5-letter word.")
-    secret_word = random.choice(answers)
+    secret_word = random.choice(answers).lower()
 
     attempts = 1
     max_attempts = 6
 
     while attempts <= max_attempts:
         guess = input("Enter Guess #" + str(attempts) + ": ").lower()
+        
         if not is_valid_guess(guess, guesses):
             print("Invalid guess. Please enter an English word with 5 letters.")
             continue
+
         if guess == secret_word:
-            print("Congratulations! You guessed the word: ", secret_word)
+            print("Congratulations! You guessed the word:", secret_word)
             break
 
         attempts += 1
@@ -48,27 +45,12 @@ def wordle(guesses, answers):
         print(feedback)
     
     if attempts > max_attempts:
-        print("Game over. The secret word was: ", secret_word)
+        print("Game over. The secret word was:", secret_word)
 
-guesses = load_dictionary("guesses.txt")
-answers = load_dictionary("answers.txt")
+guesses_dictionary = "guesses.txt"
+answers_dictionary = "answers.txt"
 
-# wordle(guesses, answers)
+guesses = load_dictionary(guesses_dictionary)
+answers = load_dictionary(answers_dictionary)
 
-str = "\t" + "\033[33m" + "A" + "\033[0m" + "UDIO"
-str += "\n\t" + "SLEP" + "\033[32m" + "T"
-str += "\n\t" + "\033[33m" + "RA" + "\033[0m" + "N" + "\033[33m" + "CH"
-str += "\n\t" + "\033[32m" + "CHART" + "\033[0m"
-
-print()
-print()
-print()
-print()
-print("   Welcome to Wordle!")
-print()
-print(str)
-print()
-print("    Congratulations!\n      You guessed \n    the word: " + "\033[32m" + "CHART")
-print()
-print()
-print()
+wordle(guesses, answers)
